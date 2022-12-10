@@ -1,66 +1,56 @@
-export function solveA(lines: string) {
-    const myMotorola = new WalkieTalkie(parseLines(lines));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.solveB = exports.solveA = void 0;
+function solveA(lines) {
+    var myMotorola = new WalkieTalkie(parseLines(lines));
     return myMotorola.signalStrength;
 }
-
-export function solveB(lines: string) {
-    const myMotorola = new WalkieTalkie(parseLines(lines));
+exports.solveA = solveA;
+function solveB(lines) {
+    var myMotorola = new WalkieTalkie(parseLines(lines));
     return myMotorola.RenderScreen();
 }
-
-function parseLines(inputString: string): [string, number][] {
-    let lines = inputString.split(/\r?\n/);
-
-    const inputProgram: [string, number][] = []
-
-    for (let line of lines){
-        inputProgram.push([line.split(' ')[0], parseInt(line.split(' ')[1])])
+exports.solveB = solveB;
+function parseLines(inputString) {
+    var lines = inputString.split(/\r?\n/);
+    var inputProgram = [];
+    for (var _i = 0, lines_1 = lines; _i < lines_1.length; _i++) {
+        var line = lines_1[_i];
+        inputProgram.push([line.split(' ')[0], parseInt(line.split(' ')[1])]);
     }
     return inputProgram;
 }
-
-class WalkieTalkie {
-
-    private readonly program: [string, number][];
-    private xValue: number;
-    private clock: number;
-    public signalStrength;
-    private screen: string;
-    public RenderScreen(){
-        return this.screen;
-    }
-
-    constructor(program: [string, number][]) {
+var WalkieTalkie = (function () {
+    function WalkieTalkie(program) {
+        this.program = [];
         this.program = program;
         this.xValue = 1;
         this.clock = 1;
         this.signalStrength = 0;
         this.screen = "";
-        this.runProgram()
+        this.runProgram();
     }
-
-    private runProgram() {
-
-        let i = 0;
-        let multiplier = 0;
-
+    WalkieTalkie.prototype.RenderScreen = function () {
+        return this.screen;
+    };
+    WalkieTalkie.prototype.runProgram = function () {
+        var i = 0;
+        var multiplier = 0;
         while (i < this.program.length) {
-            const [operation, value] = this.program[i];
-
+            var _a = this.program[i], operation = _a[0], value = _a[1];
             if ((this.clock - 20) % 40 === 0) {
                 this.signalStrength += this.clock * this.xValue;
             }
-
             if ((this.clock - 1) % 40 === 0) {
                 this.screen = this.screen + "\n";
             }
             if (Math.abs((this.clock - 1) % 40 - this.xValue) <= 1) {
                 this.screen = this.screen + "@@@";
-            } else {
+            }
+            else {
                 this.screen = this.screen + "---";
             }
-
-            switch (operation){
+            switch (operation) {
                 case "addx":
                     this.xValue += multiplier * value;
                     i += multiplier;
@@ -75,5 +65,7 @@ class WalkieTalkie {
             }
             this.clock++;
         }
-    }
-}
+    };
+    return WalkieTalkie;
+}());
+//# sourceMappingURL=day10.js.map

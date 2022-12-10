@@ -1,6 +1,6 @@
 const { readInput } = require('./aocUtils');
 
-const day = "8";
+const day = "10";
 
 const { solveA } = require(`./codeFiles/day${day}`);
 const { solveB } = require(`./codeFiles/day${day}`);

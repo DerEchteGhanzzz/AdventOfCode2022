@@ -1,5 +1,5 @@
 var readInput = require('./aocUtils').readInput;
-var day = "8";
+var day = "10";
 var solveA = require("./codeFiles/day".concat(day)).solveA;
 var solveB = require("./codeFiles/day".concat(day)).solveB;
 console.log("Day ".concat(day, ":"));
