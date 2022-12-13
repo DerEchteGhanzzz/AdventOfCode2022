@@ -1,32 +1,72 @@
 "use strict";
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.solveB = exports.solveA = void 0;
 function solveA(lines) {
+    var e_1, _a, e_2, _b;
     var answer = 0;
-    for (var _i = 0, lines_1 = lines; _i < lines_1.length; _i++) {
-        var line = lines_1[_i];
-        var compOne = line.substring(0, line.length / 2);
-        var compTwo = line.substring(line.length / 2, line.length);
-        for (var _a = 0, compOne_1 = compOne; _a < compOne_1.length; _a++) {
-            var item = compOne_1[_a];
-            if (compTwo.includes(item)) {
-                answer += priorityValue(item);
-                break;
+    try {
+        for (var lines_1 = __values(lines), lines_1_1 = lines_1.next(); !lines_1_1.done; lines_1_1 = lines_1.next()) {
+            var line = lines_1_1.value;
+            var compOne = line.substring(0, line.length / 2);
+            var compTwo = line.substring(line.length / 2, line.length);
+            try {
+                for (var compOne_1 = (e_2 = void 0, __values(compOne)), compOne_1_1 = compOne_1.next(); !compOne_1_1.done; compOne_1_1 = compOne_1.next()) {
+                    var item = compOne_1_1.value;
+                    if (compTwo.includes(item)) {
+                        answer += priorityValue(item);
+                        break;
+                    }
+                }
+            }
+            catch (e_2_1) { e_2 = { error: e_2_1 }; }
+            finally {
+                try {
+                    if (compOne_1_1 && !compOne_1_1.done && (_b = compOne_1.return)) _b.call(compOne_1);
+                }
+                finally { if (e_2) throw e_2.error; }
             }
         }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (lines_1_1 && !lines_1_1.done && (_a = lines_1.return)) _a.call(lines_1);
+        }
+        finally { if (e_1) throw e_1.error; }
     }
     return answer;
 }
 exports.solveA = solveA;
 function solveB(lines) {
+    var e_3, _a;
     var answer = 0;
     for (var i = 0; i < lines.length; i += 3) {
-        for (var _i = 0, _a = lines[i]; _i < _a.length; _i++) {
-            var item = _a[_i];
-            if (lines[i + 1].includes(item) && lines[i + 2].includes(item)) {
-                answer += priorityValue(item);
-                break;
+        try {
+            for (var _b = (e_3 = void 0, __values(lines[i])), _c = _b.next(); !_c.done; _c = _b.next()) {
+                var item = _c.value;
+                if (lines[i + 1].includes(item) && lines[i + 2].includes(item)) {
+                    answer += priorityValue(item);
+                    break;
+                }
             }
+        }
+        catch (e_3_1) { e_3 = { error: e_3_1 }; }
+        finally {
+            try {
+                if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+            }
+            finally { if (e_3) throw e_3.error; }
         }
     }
     return answer;

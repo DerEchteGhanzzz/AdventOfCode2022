@@ -1,28 +1,48 @@
 "use strict";
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.solveB = exports.solveA = void 0;
 function solveA(lines) {
-    var myMotorola = new WalkieTalkie(parseLines(lines));
-    return myMotorola.signalStrength;
+    var mySony = new CRT(parseLines(lines));
+    return mySony.signalStrength;
 }
 exports.solveA = solveA;
 function solveB(lines) {
-    var myMotorola = new WalkieTalkie(parseLines(lines));
-    return myMotorola.RenderScreen();
+    var mySony = new CRT(parseLines(lines));
+    return mySony.RenderScreen();
 }
 exports.solveB = solveB;
 function parseLines(inputString) {
+    var e_1, _a;
     var lines = inputString.split(/\r?\n/);
     var inputProgram = [];
-    for (var _i = 0, lines_1 = lines; _i < lines_1.length; _i++) {
-        var line = lines_1[_i];
-        inputProgram.push([line.split(' ')[0], parseInt(line.split(' ')[1])]);
+    try {
+        for (var lines_1 = __values(lines), lines_1_1 = lines_1.next(); !lines_1_1.done; lines_1_1 = lines_1.next()) {
+            var line = lines_1_1.value;
+            inputProgram.push({ operation: line.split(' ')[0], value: parseInt(line.split(' ')[1]) });
+        }
+    }
+    catch (e_1_1) { e_1 = { error: e_1_1 }; }
+    finally {
+        try {
+            if (lines_1_1 && !lines_1_1.done && (_a = lines_1.return)) _a.call(lines_1);
+        }
+        finally { if (e_1) throw e_1.error; }
     }
     return inputProgram;
 }
-var WalkieTalkie = (function () {
-    function WalkieTalkie(program) {
-        this.program = [];
+var CRT = (function () {
+    function CRT(program) {
         this.program = program;
         this.xValue = 1;
         this.clock = 1;
@@ -30,14 +50,14 @@ var WalkieTalkie = (function () {
         this.screen = "";
         this.runProgram();
     }
-    WalkieTalkie.prototype.RenderScreen = function () {
+    CRT.prototype.RenderScreen = function () {
         return this.screen;
     };
-    WalkieTalkie.prototype.runProgram = function () {
+    CRT.prototype.runProgram = function () {
         var i = 0;
         var multiplier = 0;
         while (i < this.program.length) {
-            var _a = this.program[i], operation = _a[0], value = _a[1];
+            var instruction = this.program[i];
             if ((this.clock - 20) % 40 === 0) {
                 this.signalStrength += this.clock * this.xValue;
             }
@@ -50,9 +70,9 @@ var WalkieTalkie = (function () {
             else {
                 this.screen = this.screen + "---";
             }
-            switch (operation) {
+            switch (instruction.operation) {
                 case "addx":
-                    this.xValue += multiplier * value;
+                    this.xValue += multiplier * instruction.value;
                     i += multiplier;
                     multiplier = multiplier === 0 ? 1 : 0;
                     break;
@@ -66,6 +86,6 @@ var WalkieTalkie = (function () {
             this.clock++;
         }
     };
-    return WalkieTalkie;
+    return CRT;
 }());
 //# sourceMappingURL=day10.js.map

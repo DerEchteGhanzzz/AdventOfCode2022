@@ -21,11 +21,11 @@ export function solveB(lines: string){
 }
 
 function parseLines(inputString: string): string[]{
-    let lines = inputString.split(/\r?\n/);
-
+    const lines = inputString.split(/\r?\n/);
+    const input = []
     for (let line of lines){
 
     }
 
-    return lines;
+    return input;
 }

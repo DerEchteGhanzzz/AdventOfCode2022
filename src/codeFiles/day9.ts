@@ -1,27 +1,27 @@
-export function solveA(lines: string){
+export function solveA(lines: string) {
     return simulateRope(parseLines(lines), 1)
 }
 
-export function solveB(lines: string){
+export function solveB(lines: string) {
     return simulateRope(parseLines(lines), 9)
 }
 
-function simulateRope(input: [string, number][], knots: number): number{
+function simulateRope(input: [string, number][], knots: number): number {
     const visited = new Set<string>();
 
     const headPos: [number, number] = [0, 0];
 
     const tailPosArray: [number, number][] = [];
-    for (let i = 0; i < knots; i++){
+    for (let i = 0; i < knots; i++) {
         tailPosArray.push([0, 0])
     }
 
-    for (let entry of input){
-        for (let i = 0; i < entry[1]; i++){
+    for (let entry of input) {
+        for (let i = 0; i < entry[1]; i++) {
             updateHead(entry, headPos);
             updateTail(headPos, tailPosArray[0], visited)
-            for (let i = 1; i < tailPosArray.length; i++){
-                updateTail(tailPosArray[i-1], tailPosArray[i], visited)
+            for (let i = 1; i < tailPosArray.length; i++) {
+                updateTail(tailPosArray[i - 1], tailPosArray[i], visited)
             }
             visited.add(tailPosArray[knots - 1][0].toString().concat(",", tailPosArray[knots - 1][1].toString()))
         }
@@ -29,9 +29,9 @@ function simulateRope(input: [string, number][], knots: number): number{
     return visited.size;
 }
 
-function  updateTail(headPos: [number, number], tailPos: [number, number], visited: Set<string>){
+function updateTail(headPos: [number, number], tailPos: [number, number], visited: Set<string>) {
 
-    if (Math.abs(headPos[0] - tailPos[0]) + Math.abs(headPos[1] - tailPos[1]) > 2){
+    if (Math.abs(headPos[0] - tailPos[0]) + Math.abs(headPos[1] - tailPos[1]) > 2) {
         tailPos[0] += Math.sign(headPos[0] - tailPos[0])
         tailPos[1] += Math.sign(headPos[1] - tailPos[1])
     } else {
@@ -43,8 +43,8 @@ function  updateTail(headPos: [number, number], tailPos: [number, number], visit
     }
 }
 
-function updateHead(entry: [string, number], headPos: [number, number]){
-    switch (entry[0]){
+function updateHead(entry: [string, number], headPos: [number, number]) {
+    switch (entry[0]) {
         case "R":
             headPos[0] += 1;
             break;
@@ -60,11 +60,11 @@ function updateHead(entry: [string, number], headPos: [number, number]){
     }
 }
 
-function parseLines(inputString: string): [string, number][]{
+function parseLines(inputString: string): [string, number][] {
     let lines = inputString.split(/\r?\n/);
 
     const input: [string, number][] = []
-    for (let line of lines){
+    for (let line of lines) {
         const splitLine = line.split(' ');
         input.push([splitLine[0], parseInt(splitLine[1])])
     }

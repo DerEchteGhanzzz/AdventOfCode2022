@@ -1,27 +1,27 @@
 export function solveA(lines: string) {
-    const myMotorola = new WalkieTalkie(parseLines(lines));
-    return myMotorola.signalStrength;
+    const mySony = new CRT(parseLines(lines));
+    return mySony.signalStrength;
 }
 
 export function solveB(lines: string) {
-    const myMotorola = new WalkieTalkie(parseLines(lines));
-    return myMotorola.RenderScreen();
+    const mySony = new CRT(parseLines(lines));
+    return mySony.RenderScreen();
 }
 
-function parseLines(inputString: string): [string, number][] {
+function parseLines(inputString: string): {operation: string, value: number}[] {
     let lines = inputString.split(/\r?\n/);
 
-    const inputProgram: [string, number][] = []
+    const inputProgram: {operation: string, value: number}[] = []
 
     for (let line of lines){
-        inputProgram.push([line.split(' ')[0], parseInt(line.split(' ')[1])])
+        inputProgram.push({operation: line.split(' ')[0], value: parseInt(line.split(' ')[1])})
     }
     return inputProgram;
 }
 
-class WalkieTalkie {
+class CRT {
 
-    private readonly program: [string, number][];
+    private readonly program: {operation: string, value: number}[];
     private xValue: number;
     private clock: number;
     public signalStrength;
@@ -30,7 +30,7 @@ class WalkieTalkie {
         return this.screen;
     }
 
-    constructor(program: [string, number][]) {
+    constructor(program: {operation: string, value: number}[]) {
         this.program = program;
         this.xValue = 1;
         this.clock = 1;
@@ -45,7 +45,7 @@ class WalkieTalkie {
         let multiplier = 0;
 
         while (i < this.program.length) {
-            const [operation, value] = this.program[i];
+            const instruction = this.program[i];
 
             if ((this.clock - 20) % 40 === 0) {
                 this.signalStrength += this.clock * this.xValue;
@@ -60,9 +60,9 @@ class WalkieTalkie {
                 this.screen = this.screen + "---";
             }
 
-            switch (operation){
+            switch (instruction.operation){
                 case "addx":
-                    this.xValue += multiplier * value;
+                    this.xValue += multiplier * instruction.value;
                     i += multiplier;
                     multiplier = multiplier === 0 ? 1 : 0;
                     break;

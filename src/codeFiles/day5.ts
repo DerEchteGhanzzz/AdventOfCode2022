@@ -16,7 +16,6 @@ export function solveB(lines: string){
     let input = parseLines(lines);
     const stackArray: string[][] = input[0]
     const actionArray: number[][] = input[1]
-
     for (let action of actionArray){
         let boxArray: string[] = stackArray[action[1]].splice(stackArray[action[1]].length - action[0]);
         stackArray[action[2]] = stackArray[action[2]].concat(boxArray);
