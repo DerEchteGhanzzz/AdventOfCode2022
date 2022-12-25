@@ -26,14 +26,9 @@ var __values = (this && this.__values) || function(o) {
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.solveB = exports.solveA = void 0;
@@ -111,7 +106,7 @@ function dijkstra(start, end, graph, reverse) {
     var visited = new Set();
     var pathDictionary = new Map();
     while (queue.size > 0) {
-        var currentNode = __spreadArray([], __read(queue), false)[0][0];
+        var currentNode = __spread(queue)[0][0];
         if (currentNode.letter === end.letter) {
             return distanceDict.get(currentNode);
         }
@@ -168,7 +163,7 @@ function printPath(current, pathDictionary) {
     if (pathDictionary.has(current)) {
         printPath(pathDictionary.get(current), pathDictionary);
     }
-    console.log("".concat(current.height, " at ").concat(current.coords.x, ", ").concat(current.coords.y));
+    console.log(current.height + " at " + current.coords.x + ", " + current.coords.y);
 }
 function getStartAndEnd(graph) {
     var start;

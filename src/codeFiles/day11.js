@@ -82,10 +82,10 @@ function parseLines(inputString, starOne) {
             var _b = __read(lines[i + 2].split(": ")[1].split(" = ")[1].split(" "), 3), old = _b[0], inspectionOperator = _b[1], inspectionValue = _b[2];
             var operation = void 0;
             if (starOne) {
-                operation = eval("(old) => Math.floor(old ".concat(inspectionOperator, " ").concat(inspectionValue, " / 3)"));
+                operation = eval("(old) => Math.floor(old " + inspectionOperator + " " + inspectionValue + " / 3)");
             }
             else {
-                operation = eval("(old) => old ".concat(inspectionOperator, " ").concat(inspectionValue));
+                operation = eval("(old) => old " + inspectionOperator + " " + inspectionValue);
             }
             var divisor = parseInt(lines[i + 3].split(" divisible by ")[1]);
             var trueMonkey = parseInt(lines[i + 4].split("throw to monkey ")[1]);

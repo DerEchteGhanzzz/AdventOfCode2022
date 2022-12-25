@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.solveB = exports.solveA = void 0;
 function solveA(lines) {
-    return getMessageID(lines[0], 4);
+    return getMessageID(parseLines(lines), 4);
 }
 exports.solveA = solveA;
 function solveB(lines) {
-    return getMessageID(lines[0], 14);
+    return getMessageID(parseLines(lines), 14);
 }
 exports.solveB = solveB;
 function getMessageID(message, length) {
@@ -20,5 +20,9 @@ function getMessageID(message, length) {
 }
 function hasDuplicates(array) {
     return (new Set(array)).size !== array.length;
+}
+function parseLines(inputString) {
+    var lines = inputString.split(/\r?\n/);
+    return lines[0];
 }
 //# sourceMappingURL=day6.js.map

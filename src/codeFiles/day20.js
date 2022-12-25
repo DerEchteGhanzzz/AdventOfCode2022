@@ -28,8 +28,6 @@ function solveB(lines) {
     var _a = __read(parseLines(lines), 2), digitMap = _a[0], digitOrders = _a[1];
     var publicKey = 811589153;
     digitMap.forEach(function (v, k) { return digitMap.set(k, v * publicKey); });
-    for (var i = 0; i < digitMap.size; i++) {
-    }
     for (var i = 0; i < 10; i++) {
         mixList(digitOrders, digitMap);
     }

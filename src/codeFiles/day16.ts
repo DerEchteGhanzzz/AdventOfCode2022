@@ -34,14 +34,10 @@ export function solveB(lines: string) {
                 elephantUnopenedValves.add(unopenedValves[b]);
             }
         }
-        const myString = JSON.stringify([...myUnopenedValves]);
-        const elephantString = JSON.stringify([...elephantUnopenedValves]);
-        if (haveHad.has(myString + "," + elephantString)) {
+        if (haveHad.has(binaries)) {
             continue;
         }
-
-        haveHad.add(myString + "," + elephantString);
-        haveHad.add(elephantString + "," + myString);
+        haveHad.add(binaries.split("").map(d => {if (d === "1") {return "0"} else { return "1"}}).join());
 
         flowChart.push(
             solveTSP("AA", 26, 0, myUnopenedValves, network, 0) +

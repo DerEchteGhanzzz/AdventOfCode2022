@@ -66,13 +66,15 @@ function solveB(lines) {
                 elephantUnopenedValves.add(unopenedValves[b]);
             }
         }
-        var myString = JSON.stringify(__spread(myUnopenedValves));
-        var elephantString = JSON.stringify(__spread(elephantUnopenedValves));
-        if (haveHad.has(myString + "," + elephantString)) {
+        if (haveHad.has(binaries)) {
             continue;
         }
-        haveHad.add(myString + "," + elephantString);
-        haveHad.add(elephantString + "," + myString);
+        haveHad.add(binaries.split("").map(function (d) { if (d === "1") {
+            return "0";
+        }
+        else {
+            return "1";
+        } }).join());
         flowChart.push(solveTSP("AA", 26, 0, myUnopenedValves, network, 0) +
             solveTSP("AA", 26, 0, elephantUnopenedValves, network, 0));
     }

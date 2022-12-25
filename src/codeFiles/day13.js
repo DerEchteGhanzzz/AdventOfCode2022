@@ -40,7 +40,6 @@ function solveB(lines) {
             return -1;
         }
     });
-    console.log(input);
     return (input.indexOf(distressOne) + 1) * (input.indexOf(distressTwo) + 1);
 }
 exports.solveB = solveB;

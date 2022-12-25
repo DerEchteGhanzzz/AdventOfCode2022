@@ -57,7 +57,6 @@ function mixList(digitOrders: number[], digitMap: Map<number, number>) {
             negative = 0;
         }
         const newIndex = modulo(currentIndex + currentDigit + negative, digitOrders.length);
-        //console.log(currentIndex, newIndex)
 
         digitOrders.splice(newIndex, 0, i);
     }

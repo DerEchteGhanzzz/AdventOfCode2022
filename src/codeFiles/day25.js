@@ -12,17 +12,15 @@ var __values = (this && this.__values) || function(o) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.solveB = exports.solveA = void 0;
-var modulo = require('../aocUtils').modulo;
+var aocUtils_1 = require("../aocUtils");
 function solveA(lines) {
     var e_1, _a;
     var input = parseLines(lines);
     var answer = 0;
     try {
         for (var input_1 = __values(input), input_1_1 = input_1.next(); !input_1_1.done; input_1_1 = input_1.next()) {
-            var match = input_1_1.value;
-            var opponent = match[0] - "A".charCodeAt(0);
-            var you = match[1] - "X".charCodeAt(0);
-            answer += modulo(you - opponent + 3 + 1, 3) * 3 + you + 1;
+            var entry = input_1_1.value;
+            answer += snafuToDec(entry);
         }
     }
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -32,48 +30,54 @@ function solveA(lines) {
         }
         finally { if (e_1) throw e_1.error; }
     }
-    return answer;
+    return decToSnafu(answer);
 }
 exports.solveA = solveA;
 function solveB(lines) {
-    var e_2, _a;
-    var input = parseLines(lines);
-    var answer = 0;
-    try {
-        for (var input_2 = __values(input), input_2_1 = input_2.next(); !input_2_1.done; input_2_1 = input_2.next()) {
-            var match = input_2_1.value;
-            var opponent = match[0] - "A".charCodeAt(0);
-            var outcome = match[1] - "X".charCodeAt(0);
-            answer += 3 * outcome + modulo(opponent + outcome - 1, 3) + 1;
-        }
-    }
-    catch (e_2_1) { e_2 = { error: e_2_1 }; }
-    finally {
-        try {
-            if (input_2_1 && !input_2_1.done && (_a = input_2.return)) _a.call(input_2);
-        }
-        finally { if (e_2) throw e_2.error; }
-    }
-    return answer;
+    return "Start the blender!";
 }
 exports.solveB = solveB;
+function snafuToDec(snafu) {
+    var SNAFU = new Map([["3", 3], ["2", 2], ["1", 1], ["0", 0], ["-", -1], ["=", -2]]);
+    var currentNumber = 0;
+    for (var i = 0; i < snafu.length; i++) {
+        var di = snafu.length - 1 - i;
+        currentNumber += SNAFU.get(snafu.charAt(i)) * Math.pow(5, di);
+    }
+    return currentNumber;
+}
+function decToSnafu(decimal) {
+    var rSNAFU = new Map([[3, "3"], [2, "2"], [1, "1"], [0, "0"], [-1, "-"], [-2, "="]]);
+    var snafu = "";
+    var power = 0;
+    while (decimal !== 0) {
+        for (var i = -2; i < 4; i++) {
+            if (aocUtils_1.modulo(decimal - Math.pow(5, power) * i, Math.pow(5, power + 1)) === 0) {
+                decimal = decimal - Math.pow(5, power) * i;
+                snafu = rSNAFU.get(i).toString() + snafu;
+                power++;
+                break;
+            }
+        }
+    }
+    return snafu;
+}
 function parseLines(inputString) {
-    var e_3, _a;
+    var e_2, _a;
     var lines = inputString.split(/\r?\n/);
     var input = [];
     try {
         for (var lines_1 = __values(lines), lines_1_1 = lines_1.next(); !lines_1_1.done; lines_1_1 = lines_1.next()) {
             var line = lines_1_1.value;
-            input.push([line.charCodeAt(0), line.charCodeAt(2)]);
         }
     }
-    catch (e_3_1) { e_3 = { error: e_3_1 }; }
+    catch (e_2_1) { e_2 = { error: e_2_1 }; }
     finally {
         try {
             if (lines_1_1 && !lines_1_1.done && (_a = lines_1.return)) _a.call(lines_1);
         }
-        finally { if (e_3) throw e_3.error; }
+        finally { if (e_2) throw e_2.error; }
     }
-    return input;
+    return lines;
 }
-//# sourceMappingURL=day2.js.map
+//# sourceMappingURL=day25.js.map

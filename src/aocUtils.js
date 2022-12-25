@@ -5,7 +5,7 @@ var fs_1 = require("fs");
 var path_1 = require("path");
 module.exports;
 function readInput(day) {
-    return (0, fs_1.readFileSync)((0, path_1.join)(__dirname, "/inputFiles/day".concat(day, ".txt")), 'utf-8');
+    return fs_1.readFileSync(path_1.join(__dirname, "/inputFiles/day" + day + ".txt"), 'utf-8');
 }
 exports.readInput = readInput;
 function modulo(a, n) {

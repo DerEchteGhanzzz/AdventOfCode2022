@@ -14,23 +14,20 @@ export function solveA(lines: string) {
     for (let i = 0; i < 2022; i++) {
 
         const currentBlock = blocks[i % 5];
-        //console.log(coordSet);
         let newY;
         let _;
         [newY, currentIndex, _] = simulateTetris(coordSet, currentBlock, currents, highestY + 3, currentIndex);
         if (newY > highestY) {
             highestY = newY;
         }
-        //console.log()
     }
 
     return highestY;
 }
 
 export function solveB(lines: string) {
+
     let currents: number[] = parseLines(lines);
-    let answer: string
-    let count = 0;
     let coordSet = new Set<string>();
 
     const blocks = [
@@ -41,7 +38,6 @@ export function solveB(lines: string) {
         new TetrisBlock([[0, 0], [1, 0], [0, 1], [1, 1]], 1, 1)
     ]
     let currentIndex = 0;
-    let possibleXes = new Set<number>();
     let xyDict = new Map();
 
     let highestY = 0;
@@ -52,7 +48,6 @@ export function solveB(lines: string) {
             return i + " " + currentIndex
         }
 
-        //console.log(coordSet);
         let newY;
         let landedLeftX;
         [newY, currentIndex, landedLeftX] = simulateTetris(coordSet, currentBlock, currents, highestY + 3, currentIndex);
@@ -62,6 +57,7 @@ export function solveB(lines: string) {
     }
 
     return highestY;
+
 }
 
 function simulateTetris(coordSet: Set<string>, currentBlock: TetrisBlock, currents: number[], startingY: number, currentIndex: number): [number, number, number] {

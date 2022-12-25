@@ -1,32 +1,21 @@
-export function solveA(lines: string[]){
-
-    let max: number = 0
-    let cur: number = 0
-    for (let line of lines){
-        if (line === ""){
-            if (max < cur){
-                max = cur
-            }
-            cur = 0
-            continue
-        }
-        cur += parseInt(line)
-    }
-    return max
+export function solveA(lines: string){
+    const elves = parseLines(lines);
+    const mappedElves = elves.map(elf => elf.reduce((total, lunch) => total + lunch, 0)).sort().reverse();
+    return mappedElves[0];
 }
 
-export function solveB(lines: string[]){
+export function solveB(lines: string){
+    const elves = parseLines(lines);
+    const mappedElves = elves.map(elf => elf.reduce((total, lunch) => total + lunch, 0)).sort().reverse();
+    return mappedElves[0] + mappedElves[1] + mappedElves[2];
+}
 
-    const elves: number[] = []
-    let cur: number = 0
-    for (let line of lines){
-        if (line === ""){
-            elves.push(cur)
-            cur = 0
-            continue
-        }
-        cur += parseInt(line)
+function parseLines(inputString: string): number[][]{
+    const lines = inputString.split(/\r?\n\r?\n/);
+    const elves = []
+    for (let elfString of lines){
+        const elf = elfString.split(/\r?\n/).map(str => parseInt(str));
+        elves.push(elf);
     }
-    elves.sort()
-    return elves[elves.length-1] + elves[elves.length-2] + elves[elves.length-3]
+    return elves;
 }

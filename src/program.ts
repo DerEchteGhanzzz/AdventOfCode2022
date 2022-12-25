@@ -1,14 +1,21 @@
-const { readInput } = require('./aocUtils');
+const {readInput} = require('./aocUtils');
 
-const day = "13";
+function gatherStarFruit(day) {
 
-const { solveA } = require(`./codeFiles/day${day}`);
-const { solveB } = require(`./codeFiles/day${day}`);
+    const {solveA} = require(`./codeFiles/day${day}`);
+    const {solveB} = require(`./codeFiles/day${day}`);
 
-console.log(`Day ${day}:`);
+    console.log(`Day ${day}:`);
+    let start = Date.now();
+    console.log(`Answer A: ${solveA(readInput(day))} in ${Date.now() - start} ms`);
+    start = Date.now();
+    console.log(`Answer B: ${solveB(readInput(day))} in ${Date.now() - start} ms`);
+}
+
 let start = Date.now();
-process.stdout.write(`Answer A: ` + solveA(readInput(day)));
-console.log(` in ${Date.now() - start} ms`)
-start = Date.now();
-process.stdout.write(`Answer B: ` + solveB(readInput(day)));
-console.log(` in ${Date.now() - start} ms`)
+for (let day = 1; day <= 25; day++) {
+
+    gatherStarFruit(day.toString());
+
+}
+console.log(`Expedition complete! ${(Date.now() - start) / 1000} s`)

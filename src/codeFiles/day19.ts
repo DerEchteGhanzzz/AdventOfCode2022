@@ -1,83 +1,107 @@
-import {match} from "assert";
-import {isNull} from "util";
-
 export function solveA(lines: string) {
     let blueprintBook = parseLines(lines);
-    let totalQuality: number
+    let totalQuality: number = 0;
 
     let blueprintCount = 1;
     for (let blueprint of blueprintBook) {
-        totalQuality = blueprintCount * getMaxQuality([1, 0, 0, 0], [0, 0, 0, 0], 0, blueprint);
-        console.log(blueprintCount, "done");
+        GlobalMax.value = 0;
+        getMaxQuality([1, 0, 0, 0, 0], [0, 0, 0, 0], 1, 24, blueprint);
+        totalQuality += blueprintCount * GlobalMax.value;
         blueprintCount++;
     }
     return totalQuality
 }
 
 export function solveB(lines: string) {
-    let input = parseLines(lines);
-    let answer: string
+    let blueprintBook = parseLines(lines);
+    let totalQuality: number = 1;
 
-    for (let entry of input) {
-
+    let blueprintCount = 1;
+    for (let blueprint of blueprintBook) {
+        GlobalMax.value = 0;
+        getMaxQuality([1, 0, 0, 0, 0], [0, 0, 0, 0], 1, 32, blueprint);
+        totalQuality *= GlobalMax.value;
+        blueprintCount++;
+        if (blueprintCount > 3){
+            break;
+        }
     }
-    return answer
+    return totalQuality
 }
 
 
-function getMaxQuality(robots: number[], resources: number[], round, blueprint: number[][]): number {
+function getMaxQuality(robots: number[], resources: number[], round: number, maxRounds: number, blueprint: number[][]) {
 
-    const decisions = 4;
-    const qualityArray = new Set<number>();
-    for (let decision = decisions - 1; decision >= 0; decision--) {
-        //console.log()
-        // turn begin: build a new robot
-        let timeDelta = 0;
-        for (let i = 0; i < decisions; i++) {
+    if (GlobalMax.value < resources[3]) {   // anti-Tim
+        GlobalMax.value = resources[3];
+    }
+    if (round > maxRounds) {
+        return;
+    }
 
-            let robotWorkTime = Math.ceil(blueprint[decision][i] / robots[i]);
-            let resourceTimeSpare = Math.floor((robotWorkTime * robots[i] - blueprint[decision][i]) / resources[i])
-            resourceTimeSpare = Number.isInteger(resourceTimeSpare) ? resourceTimeSpare : 0;
-            const calcTime = Math.max(robotWorkTime - resourceTimeSpare + 1, 1);
-            //console.log(calcTime)
-            if (calcTime > timeDelta && !isNaN(calcTime)) {
-                timeDelta = calcTime;
+    let nextActions = getPossibleActions(robots, blueprint);
+
+    let roundsLeft = maxRounds + 1 - round;
+    const maximalPossible = roundsLeft * (roundsLeft + 1) / 2 * (robots[3] + 1) + resources[3];
+    if (maximalPossible <= GlobalMax.value) {
+        return;
+    }
+    /*if (robots[3] !== 0){
+        console.log(robots, resources, round)
+    }*/
+    for (let action of nextActions) {
+
+        const newResources = Array.from(resources);
+        let newRound = round;
+        const newRobots = Array.from(robots);
+
+        while (newRound < maxRounds) {
+
+            if (canAfford(newResources, blueprint[action])){
+                newRobots[action]++;
+                break;
             }
-        }
-        if (timeDelta === 0) {
-            timeDelta = 1;
-        }
-        if (timeDelta === Infinity) {
-            qualityArray.add(0);
-            continue;
+            newResources.forEach((r, idx) => newResources[idx] = newResources[idx] + robots[idx]);
+            newRound++;
         }
 
-        const newRound = round + timeDelta;
-
-        const newResources: number[] = new Array(...resources).map(function (oldResource, idx) {
-            return oldResource + robots[idx] * timeDelta - blueprint[decision][idx];
-        });
-
-        if (newRound >= 24) {
-            //console.log("score: ", resources[3] + (24 - round) * robots[3])
-            qualityArray.add(newResources[3] + (23 - round) * robots[3])
-            continue;
-        }
-
-        // turn end: new robot.
-        const newRobots = [robots[0], robots[1], robots[2], robots[3]];
-        newRobots[decision]++;
-        //if (newResources[1] < 0){
-            console.log()
-            console.log(resources, robots);
-            console.log(newResources, newRobots);
-            console.log(timeDelta, blueprint[decision])
-        //}
-        const quality = getMaxQuality(newRobots, newResources, newRound, blueprint);
-        qualityArray.add(quality);
+        newResources.forEach((r, idx) => newResources[idx] = newResources[idx] + robots[idx] - blueprint[action][idx]);
+        getMaxQuality(newRobots, newResources, newRound + 1, maxRounds, blueprint);
     }
-    return Math.max(...qualityArray);
+    return;
 }
+
+
+function canAfford(resources: number[], robotCost: number[]): boolean{
+
+    for (let i = 0; i < 4; i++){
+        if (resources[i] < robotCost[i]){
+            return false;
+        }
+    }
+    return true;
+}
+
+
+function getPossibleActions(robots: number[], blueprint: number[][]): number[] {
+    const nextActions: number[] = [];
+    if (robots[2] !== 0) {
+        nextActions.push(3);
+    }
+    if (robots[1] !== 0) {
+        nextActions.push(2);
+    }
+    if (robots[1] < blueprint[2][1]){
+        nextActions.push(1);
+    }
+    if (robots[0] < Math.max(blueprint[0][0], blueprint[1][0], blueprint[2][0], blueprint[3][0])){
+        nextActions.push(0);
+    }
+
+
+    return nextActions;
+}
+
 
 function parseLines(inputString: string) {
     const lines = inputString.split(/\r?\n/);
@@ -106,7 +130,12 @@ function parseLines(inputString: string) {
 
             blueprint.push(costTable);
         }
+        blueprint.push([0, 0, 0, 0]);   // do-nothing cost table (doing nothing costs nothing)
         blueprintBook.push(blueprint);
     }
     return blueprintBook;
+}
+
+export class GlobalMax {
+    public static value: number;
 }

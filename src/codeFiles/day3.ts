@@ -1,9 +1,9 @@
-export function solveA(lines: string[]){
-
+export function solveA(lines: string){
+    const rucksacks = parseLines(lines);
     let answer: number = 0
-    for (let line of lines){
-        let compOne: string = line.substring(0, line.length/2)
-        let compTwo: string = line.substring(line.length/2, line.length)
+    for (let rucksack of rucksacks){
+        let compOne: string = rucksack.substring(0, rucksack.length/2)
+        let compTwo: string = rucksack.substring(rucksack.length/2, rucksack.length)
         for (let item of compOne){
             if (compTwo.includes(item)){
                 answer += priorityValue(item)
@@ -14,13 +14,13 @@ export function solveA(lines: string[]){
     return answer
 }
 
-export function solveB(lines: string[]){
-
+export function solveB(lines: string){
+    const rucksacks = parseLines(lines);
     let answer: number = 0
-    for (let i = 0; i < lines.length; i += 3){
-        for (let item of lines[i]){
-            if (lines[i+1].includes(item) && lines[i+2].includes(item)){
-                answer += priorityValue(item)
+    for (let i = 0; i < rucksacks.length; i += 3){
+        for (let item of rucksacks[i]){
+            if (rucksacks[i+1].includes(item) && rucksacks[i+2].includes(item)){
+                answer += priorityValue(item);
                 break
             }
         }
@@ -38,4 +38,8 @@ function priorityValue(item: string): number{
     }
 
     return value
+}
+
+function parseLines(inputString: string): string[]{
+    return inputString.split(/\r?\n/);
 }
