@@ -48,9 +48,9 @@ export function solveB(lines: string) {
         const currentBlock = blocks[i % 5];
 
         let newY;
-        let _;
-        [newY, currentIndex, _] = advancedTetris(coordSet, currentBlock, currents, highestY + 3, currentIndex, i, solutionMap);
-        if (_) {
+        let done;
+        [newY, currentIndex, done] = advancedTetris(coordSet, currentBlock, currents, highestY + 3, currentIndex, i, solutionMap);
+        if (done) {
             break;
         }
         if (newY > highestY) {
@@ -80,7 +80,7 @@ function advancedTetris(coordSet: Set<string>, currentBlock: TetrisBlock, curren
                 solutionMap.heightDiff = startingY - 3 - solutionMap.startHeight;
                 return [currentBlock.highestY + 1 + startingY - down, currentIndex, true]
             }
-            console.log(currentBlock.shape, startingY-3,i);
+            //console.log(currentBlock.shape, startingY-3,i);
         }
         currentIndex++;
 
